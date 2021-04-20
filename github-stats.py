@@ -3,6 +3,7 @@ import time
 import sys
 import os
 import requests
+import time
 
 
 def get_stats(repo, id, stats):
@@ -41,10 +42,14 @@ def main(args):
 			id=columns[0]
 			repos=[x for x in columns[1].split(',')]
 			for repo in repos:
-				print("Fetching stats for", id, repo)
+				print("Fetching stats for ", id, repo)
 				stats={t: 0 for t in m}
-				result=get_stats(repo,id, stats)
-				output.write("{},{},{}\n".format(id, repo, ','.join(str(v) for v in result.values())))
+				try: 
+					result=get_stats(repo,id, stats)
+					output.write("{},{},{}\n".format(id, repo, ','.join(str(v) for v in result.values())))
+				except:
+					print("Failed to fetch stats for ", id, repo)
+				time.sleep(10)
 	
 
 if __name__ == "__main__":
